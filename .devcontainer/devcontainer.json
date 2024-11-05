@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.224.2/containers/python-3
+{
+	"name": "Container Template",
+	"build": {
+		"dockerfile": "${localWorkspaceFolder}/.devcontainer/Dockerfile",
+		"context": "${localWorkspaceFolder}",
+		"target": "container_template"
+	},
+	// Set the container WORKDIR as safe in git.
+	"onCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+	// Script to Auth in Github Container Registry and pull the base image.
+	"initializeCommand": "${localWorkspaceFolder}/.devcontainer/setup.sh",
+	// Wait to build the auth to build the container.
+	"waitFor": "initializeCommand",
+	// Use non-root user to ensure security best practices.
+	"remoteUser": "everysk",
+	// Set env for local development
+	"containerEnv": {
+		"EVERYSK_ENVIRONMENT": "local"
+	},
+
+    "customizations": {
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			// "extensions": [
+			// ],
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python3",
+				// https://github.com/microsoft/vscode/issues/207813#issuecomment-2020656014
+				"extensions.verifySignature": false
+			}
+		}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/var/app,type=bind,consistency=cached",
+	"workspaceFolder": "/var/app",
+
+	// An array of Docker CLI arguments that should be used when running the container. Defaults to [].
+	// --rm: will delete the container after exit.
+	"runArgs": [
+		"--rm"
+	]
+}
